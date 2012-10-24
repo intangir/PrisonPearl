@@ -5,6 +5,7 @@ import java.util.concurrent.Callable;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.BlockState;
@@ -196,9 +197,16 @@ class PrisonPearlManager implements Listener {
 			PrisonPearl pp = pearls.getByItemStack(entry.getValue());
 			if (pp == null)
 				continue;
+			
+			// get the players location and drop the prison pearl item stack at that location
+			// according to org.bukkit.craftbukkit.CraftWorld.dropItem(), this event can't be canceled 
+			// like freePearl() can, so we can safly do this i guess
+			Location playerLocation = event.getPlayer().getLocation();
+			playerLocation.getWorld().dropItem(playerLocation, entry.getValue());
 
-			if (freePearl(pp))
-				inv.setItem(slot, null);
+			// set the player's inventory for the old prison pearl spot to be empty
+			inv.setItem(slot, null);
+
 		}
 	}
 	
