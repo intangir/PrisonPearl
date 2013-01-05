@@ -34,11 +34,6 @@ class CombatTagManager {
 	}
 	
 	public String getNPCPlayerName(Entity player) {
-		if (combatTagEnabled && combatTagApi != null) {
-			if (combatTagApi.isNPC(player)) {
-				return combatTagApi.getNPCPlayerName(player);
-			}
-		}
 		return "";
 	}
 }
