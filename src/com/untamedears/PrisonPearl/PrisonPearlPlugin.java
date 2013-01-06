@@ -75,9 +75,6 @@ public class PrisonPearlPlugin extends JavaPlugin implements Listener {
 		loadAlts();
 		checkBanAllAlts();
 		
-		if (Bukkit.getPluginManager().isPluginEnabled("PhysicalShop"))
-			new PhysicalShopListener(this, pearls);
-		
 		Bukkit.getPluginManager().registerEvents(this, this);
 		Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new Runnable() {
 			public void run() {

@@ -1,5 +1,9 @@
 package com.untamedears.PrisonPearl;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.Map.Entry;
 import java.util.concurrent.Callable;
 
@@ -14,6 +18,7 @@ import org.bukkit.block.Dispenser;
 import org.bukkit.block.DoubleChest;
 import org.bukkit.block.Furnace;
 import org.bukkit.configuration.Configuration;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
@@ -34,6 +39,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 class PrisonPearlManager implements Listener {
 	private final PrisonPearlPlugin plugin;
@@ -116,8 +122,21 @@ class PrisonPearlManager implements Listener {
 			return false;
 		}
 
-		inv.setItem(pearlnum, new ItemStack(Material.ENDER_PEARL, 1, pp.getID())); // give it to the imprisoner
-		
+		// give the prison pearl fancy name tags and info tags, and an enchantment
+		ItemStack prisonerpearl = new ItemStack(Material.ENDER_PEARL, 1, pp.getID());
+		ItemMeta ppim = prisonerpearl.getItemMeta();
+		ppim.setDisplayName("Pearl of " + imprisonedname);
+		ArrayList<String> pplore = new ArrayList<String>();
+		pplore.add("Imprisoned by " + imprisoner.getName());
+		DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+		Date date = new Date();
+		pplore.add("on " + dateFormat.format(date));
+		ppim.setLore(pplore);
+		prisonerpearl.setItemMeta(ppim);
+		prisonerpearl.addUnsafeEnchantment(Enchantment.ARROW_INFINITE, 1);
+
+		inv.setItem(pearlnum, prisonerpearl); // give it to the imprisoner
+
 		if (getConfig().getBoolean("prison_resetbed")) {
 			Player imprisoned = Bukkit.getPlayerExact(imprisonedname);
 			if (imprisoned != null)
@@ -194,7 +213,7 @@ class PrisonPearlManager implements Listener {
 	}
 	
 	// Free pearls when a player leaves
-	@EventHandler(priority=EventPriority.MONITOR)
+	@EventHandler(priority=EventPriority.LOW)
 	public void onPlayerQuit(PlayerQuitEvent event) {
 		Inventory inv = event.getPlayer().getInventory();
 		for (Entry<Integer, ? extends ItemStack> entry : inv.all(Material.ENDER_PEARL).entrySet()) {
@@ -204,7 +223,7 @@ class PrisonPearlManager implements Listener {
 				continue;
 
 			if (freePearl(pp))
-				inv.setItem(slot, null);
+				inv.clear(slot);
 		}
 	}
 	
