@@ -142,6 +142,9 @@ class PrisonPearlManager implements Listener {
 			if (imprisoned != null)
 				imprisoned.setBedSpawnLocation(respawnworld.getSpawnLocation()); // clear out the players bed
 		}
+		
+		plugin.saveAll(false);
+		
 		return true;
 	}
 	
