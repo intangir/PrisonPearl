@@ -74,7 +74,7 @@ class DamageLogManager implements Runnable, Listener {
 		if (damager == null || damager == player)
 			return;
 		
-		recordDamage(player, damager, event.getDamage());
+		recordDamage(player, damager, (int)event.getDamage());
 	}
 	
 	@EventHandler(priority=EventPriority.MONITOR)

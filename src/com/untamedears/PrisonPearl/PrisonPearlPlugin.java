@@ -190,30 +190,22 @@ public class PrisonPearlPlugin extends JavaPlugin implements Listener {
 		if (player.isDead())
 			return;
 		
-		Location loc = player.getLocation();
-		Location newloc = getRespawnLocation(player, loc);
-		if (newloc != null) {
-			if (loc.getWorld() == getPrisonWorld() && (newloc.getWorld() != loc.getWorld() || newloc == RESPAWN_PLAYER))
-				player.sendMessage("While away, you were freed!"); // he was freed offline
-			delayedTp(player, newloc);
-		} else {
-			prisonMotd(player); 
-		}
+		prisonMotd(player); 
 	}
 	
 	// don't let people escape through the end portal
-	@EventHandler(priority=EventPriority.HIGHEST)
+/*	@EventHandler(priority=EventPriority.HIGHEST)
 	public void onPlayerPortalEvent(PlayerPortalEvent event) {
 		Player player = event.getPlayer();
-		
 		if (pearls.isImprisoned(player) && !summonman.isSummoned(player)) { // if in prison but not imprisoned
 			if (event.getTo().getWorld() != getPrisonWorld()) {
 				prisonMotd(player);
-				delayedTp(player, getPrisonSpawnLocation());
+				//delayedTp(player, getPrisonSpawnLocation());
+				event.setCancelled(true);
 			}
 		}
 	}
-	
+*/
 	// remove permission attachments and record the time players log out
 	@EventHandler(priority=EventPriority.MONITOR)
 	public void onPlayerQuit(PlayerQuitEvent event) {
@@ -223,14 +215,14 @@ public class PrisonPearlPlugin extends JavaPlugin implements Listener {
 	}
 
 	// adjust spawnpoint if necessary
-	@EventHandler(priority=EventPriority.HIGHEST)
+/*	@EventHandler(priority=EventPriority.HIGHEST)
 	public void onPlayerRespawn(PlayerRespawnEvent event) {
 		prisonMotd(event.getPlayer());
 		Location newloc = getRespawnLocation(event.getPlayer(), event.getRespawnLocation());
 		if (newloc != null && newloc != RESPAWN_PLAYER)
 			event.setRespawnLocation(newloc);
 	}
-	
+*/	
 	// called when a player joins or spawns
 	private void prisonMotd(Player player) {
 		if (pearls.isImprisoned(player) && !summonman.isSummoned(player)) { // if player is imprisoned

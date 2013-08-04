@@ -226,7 +226,7 @@ class PrisonPearlManager implements Listener {
 				continue;
 			
 			// I THREW IT ON THE GROOOOUUUNNNNDDDD!!!
-			playerLocation.getWorld().dropItem(event.getPlayer().getLocation(), entry.getValue());
+			event.getPlayer().getWorld().dropItem(event.getPlayer().getLocation(), entry.getValue());
 
 			// set the player's inventory for the old prison pearl spot to be empty
 			inv.clear(slot);

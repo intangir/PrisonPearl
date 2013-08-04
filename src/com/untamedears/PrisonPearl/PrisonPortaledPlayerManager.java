@@ -91,7 +91,7 @@ public class PrisonPortaledPlayerManager implements Listener, SaveLoad {
 	@EventHandler(priority=EventPriority.MONITOR)
 	public void onPlayerPortalEvent(PlayerPortalEvent event) {
 		Player player = event.getPlayer();
-		if (pearls.isImprisoned(player.getName()))
+		if (pearls.isImprisoned(player.getName()) || event.getTo() == null)
 			return;
 		
 		if (event.getTo().getWorld() == getPrisonWorld())
