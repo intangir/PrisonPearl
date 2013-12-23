@@ -26,7 +26,7 @@ class CombatTagManager {
     }
 	
 	public boolean isCombatTagged(Player player) {
-        return combatTagEnabled && combatTagApi != null && combatTagApi.isInCombat(player);
+		return isCombatTagged(player.getName());
     }
 	
 	public boolean isCombatTagged(String playerName) {
